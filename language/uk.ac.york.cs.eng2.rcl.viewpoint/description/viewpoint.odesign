@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<description:Group xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:tool="http://www.eclipse.org/sirius/diagram/description/tool/1.1.0" xmlns:tool_1="http://www.eclipse.org/sirius/description/tool/1.1.0" name="rcl" version="12.0.0.2017041100">
+  <ownedViewpoints name="MyViewpoint">
+    <ownedRepresentations xsi:type="description_1:DiagramDescription" name="reactiveModel" label="Reactive model" domainClass="rcl::Model" enablePopupBars="true">
+      <metamodel href="../../Assessment/rcl.ecore#/"/>
+      <defaultLayer name="Default">
+        <edgeMappings name="producesEdge" label="Produces edge" deletionDescription="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@toolSections.1/@ownedTools[name='deleteProducerEdge']" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='componentContainer']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='topicContainer']" targetFinderExpression="feature:produces">
+          <style sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="Produces">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="consumesEdgle" label="Consumes edge" deletionDescription="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@toolSections.1/@ownedTools[name='deleteConsumerEdge']" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='componentContainer']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='topicContainer']" targetFinderExpression="feature:consumes">
+          <style lineStyle="dash" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="Consumes">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='green']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <edgeMappings name="topicTriggerEdge" label="TopicTrigger edge" deletionDescription="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@toolSections.1/@ownedTools[name='deleteTriggerEdge']" semanticCandidatesExpression="aql:self.components.triggers" sourceMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='topicContainer']" targetMapping="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='componentContainer']" targetFinderExpression="aql:self.eContainer()" sourceFinderExpression="feature:topic" domainClass="rcl::TopicTrigger" useDomainElement="true">
+          <style lineStyle="dot" sizeComputationExpression="2">
+            <strokeColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+            <centerLabelStyleDescription labelSize="12" labelExpression="Triggers">
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='red']"/>
+            </centerLabelStyleDescription>
+          </style>
+        </edgeMappings>
+        <containerMappings name="topicContainer" label="Topic container" semanticCandidatesExpression="feature:topics" domainClass="rcl::Topic">
+          <subNodeMappings name="slotNode" label="Slot node" semanticCandidatesExpression="feature:slots" domainClass="rcl::Slot">
+            <style xsi:type="style:SquareDescription" labelSize="12" labelExpression="aql:self.name+':' + ' ' + self.type" labelPosition="node" resizeKind="NSEW" width="15" height="5">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_yellow']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="12" showIcon="false" widthComputationExpression="aql:25" heightComputationExpression="aql:10">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_blue']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_red']"/>
+          </style>
+        </containerMappings>
+        <containerMappings name="componentContainer" label="Component container" domainClass="rcl::Component">
+          <subNodeMappings name="timeTriggerNode" label="TimeTrigger node" semanticCandidatesExpression="aql:self.triggers->select(t | t.oclIsKindOf(rcl::TimeTrigger))" domainClass="rcl::TimeTrigger">
+            <style xsi:type="style:SquareDescription" labelSize="12" labelExpression="aql:self.value.toString() + ' ' + self.unit.toString() +' ' + (if self.onStartup then '(on startup)' else '' endif)" sizeComputationExpression="aql:5" labelPosition="node" resizeKind="NSEW" width="15" height="5">
+              <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+              <color xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_green']"/>
+            </style>
+          </subNodeMappings>
+          <style xsi:type="style:FlatContainerStyleDescription" borderSizeComputationExpression="1" labelSize="12" widthComputationExpression="aql:30" heightComputationExpression="aql:15">
+            <borderColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <labelColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='black']"/>
+            <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='light_orange']"/>
+            <foregroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='orange']"/>
+          </style>
+        </containerMappings>
+        <toolSections name="createComponents" label="Components">
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createComponent" label="Create component" containerMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='componentContainer']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="rcl::Component" referenceName="components"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:ContainerCreationDescription" name="createTopic" label="Create topic" containerMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='topicContainer']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="rcl::Topic" referenceName="topics"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="createSlot" label="Create slot" nodeMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='topicContainer']/@subNodeMappings[name='slotNode']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="rcl::Slot" referenceName="slots"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:NodeCreationDescription" name="createTimeTrigger" label="Create time trigger" nodeMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@containerMappings[name='componentContainer']/@subNodeMappings[name='timeTriggerNode']">
+            <variable name="container"/>
+            <viewVariable name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:CreateInstance" typeName="rcl::TimeTrigger" referenceName="triggers"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+        <toolSections name="createEdges" label="Edges">
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createProducerEdge" label="Create Producer edge" edgeMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@edgeMappings[name='producesEdge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:SetValue" featureName="produces" valueExpression="var:target"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createConsumerEdge" label="Create Consumer edge" edgeMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@edgeMappings[name='consumesEdgle']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:SetValue" featureName="consumes" valueExpression="var:target"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:EdgeCreationDescription" name="createTopicTriggerEdge" label="Create TopicTrigger edge" edgeMappings="//@ownedViewpoints[name='MyViewpoint']/@ownedRepresentations[name='reactiveModel']/@defaultLayer/@edgeMappings[name='topicTriggerEdge']">
+            <sourceVariable name="source"/>
+            <targetVariable name="target"/>
+            <sourceViewVariable name="sourceView"/>
+            <targetViewVariable name="targetView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:ChangeContext" browseExpression="var:target">
+                <subModelOperations xsi:type="tool_1:CreateInstance" typeName="rcl::TopicTrigger" referenceName="triggers">
+                  <subModelOperations xsi:type="tool_1:SetValue" featureName="topic" valueExpression="var:source"/>
+                </subModelOperations>
+              </firstModelOperations>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="deleteProducerEdge" label="Producer edge">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:Unset" featureName="produces" elementExpression="aql:elementView.targetNode.target"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="deleteConsumerEdge" label="Consumer edge">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:Unset" featureName="consumes" elementExpression="aql:elementView.targetNode.target"/>
+            </initialOperation>
+          </ownedTools>
+          <ownedTools xsi:type="tool:DeleteElementDescription" name="deleteTriggerEdge" label="TopicTrigger edge">
+            <element name="element"/>
+            <elementView name="elementView"/>
+            <containerView name="containerView"/>
+            <initialOperation>
+              <firstModelOperations xsi:type="tool_1:Unset" featureName="topic" elementExpression="aql:elementView.targetNode.target"/>
+            </initialOperation>
+          </ownedTools>
+        </toolSections>
+      </defaultLayer>
+      <backgroundColor xsi:type="description:SystemColor" href="environment:/viewpoint#//@systemColors/@entries[name='dark_gray']"/>
+    </ownedRepresentations>
+    <ownedJavaExtensions qualifiedClassName="rcl.design.Services"/>
+  </ownedViewpoints>
+</description:Group>

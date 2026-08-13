@@ -1,0 +1,52 @@
+@namespace(uri="http://cs.york.ac.uk/eng2/rcl",prefix="r")
+package rcl;
+
+// Change the contents of this metamodel as you like!
+
+class Model {
+    val Component[*] components;
+    val Topic[*] topics;
+}
+
+class Component {
+    attr String name;
+    val Trigger[*] triggers;
+    ref Topic[*] produces;
+    ref Topic[*] consumes;
+}
+
+abstract class Trigger {}
+
+class TimeTrigger extends Trigger {
+    attr TimeUnit unit;
+    attr int value;
+    attr boolean onStartup;
+}
+
+class TopicTrigger extends Trigger {
+    ref Topic topic;
+}
+
+class Topic {
+    attr String name;
+    val Slot[*] slots;
+}
+
+class Slot {
+    attr String name;
+    attr SlotType type;
+    attr boolean isKey;
+}
+
+enum SlotType {
+    STRING;
+    DOUBLE;
+    INTEGER;
+    TIMESTAMP;
+}
+
+enum TimeUnit {
+    SECONDS;
+    MINUTES;
+    HOURS;
+}

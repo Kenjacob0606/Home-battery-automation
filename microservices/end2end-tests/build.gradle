@@ -1,0 +1,75 @@
+plugins {
+    id("io.micronaut.application") version "4.6.1"
+    id("com.gradleup.shadow") version "8.3.9"
+    id("io.micronaut.aot") version "4.6.1"
+    id("io.micronaut.openapi") version "4.6.1"
+}
+
+version = "0.1"
+group = "uk.ac.york.eng2.integration"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    compileOnly("io.micronaut:micronaut-http-client")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation("io.micronaut:micronaut-http-client")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("org.awaitility:awaitility:4.3.0")
+}
+
+
+application {
+    mainClass = "uk.ac.york.eng2.integration.Application"
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+
+graalvmNative.toolchainDetection = false
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("uk.ac.york.eng2.integration.*")
+    }
+    aot {
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        replaceLogbackXml = true
+    }
+
+    openapi {
+        client("iot", file("src/main/openapi/iot-0.0.yml")) {
+            apiPackageName = "uk.ac.york.eng2.integration.iot.api"
+            modelPackageName = "uk.ac.york.eng2.integration.iot.model"
+            clientId = "iot"
+            useReactive = false
+            alwaysUseGenerateHttpResponse = true
+        }
+        client("rcm", file("src/main/openapi/rcm-0.0.yml")) {
+            apiPackageName = "uk.ac.york.eng2.integration.rcm.api"
+            modelPackageName = "uk.ac.york.eng2.integration.rcm.model"
+            clientId = "rcm"
+            useReactive = false
+            alwaysUseGenerateHttpResponse = true
+        }
+    }
+}

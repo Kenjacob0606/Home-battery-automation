@@ -1,0 +1,138 @@
+// There cannot be two components with the same name
+context Component {
+	constraint allComponentsHaveUniqueNames {
+		check: Component.all.select (t | t.name == self.name).size() = 1
+
+		message : "Component name '" + self.name + "' aldready exists"
+	}
+}
+
+// There cannot be two topics with the same name.
+context Topic {
+	constraint allTopicsHaveUniqueNames {
+		check: Topic.all.select(t|t.name == self.name).size() = 1
+		
+		message: "Topic name '" + self.name + "' aldready exists"
+	}
+}
+
+//Topic slot names must be unique within their topic.
+context Topic {
+	constraint uniqueSlotNames{
+	
+		check: self.slots.collect(t|t.name).asSet().size() = self.slots.size()
+	
+        message : "Topic '" + self.name + "' contains duplicate slot names."
+	}
+}
+
+//Component names must use only uppercase and lowercase ASCII Latin letters and underscores.
+context Component {
+	constraint validComponentName {
+		
+		check: self.name.matches("[a-zA-Z_]+")
+		
+		message: "Invalid Component name '" + self.name + "', Component name should only consist of upper/lower case letters or underscores"
+	
+	}
+}
+
+//Topic slot names must use only uppercase and lowercase ASCII Latin letters and underscores
+context Slot{
+	constraint validTopicSlotName {
+		check: self.name.matches("[a-zA-Z_]+")
+//		check: Slot.all.name.select(t|t.name).matches("[a-zA-Z_]+")
+		message: "Invalid Slot name '" + self.name + "', Slot name should only consist of upper/lower case letters or underscores"
+	
+	}
+}
+
+//Topic names must use only uppercase and lowercase ASCII Latin letters, underscores and periods
+context Topic {
+	constraint validTopicName {
+		check: self.name.matches("[a-zA-Z_.]+")
+		message: "Invalid Topic name '" + self.name + "', Topic name should only consist of upper/lower case letters, underscores or periods"
+	}
+}
+
+//Every topic must at least have one slot for the record’s body.
+context Topic {
+	constraint topicHasMinOneSlot {
+		check: self.slots.size()>0
+		message: "Topic '"+ self.name+ "' doesn't meet minimum slot requirement. Topics must have atleast one slot!"
+	}
+}
+
+//Time-based triggers must specify a valid time period (unit and value).
+context TimeTrigger {
+	constraint HasValidTimePeriod {
+		check: self.value > 0 
+        message: "TimeTrigger in component '" + self.eContainer().name + "' must have a value greater than 0"
+	}
+	//Unit cannot be undefined in my model since it's an ENUM, but was implemented since it was explicity asked in assessment requirements
+	constraint HasValidUnit{
+		check: self.unit.isDefined()
+		message: "TimeTrigger in component '" + self.eContainer().name + "' must have a valid unit"
+	}
+}
+
+//Slots must have a name and a type.
+context Slot {
+	constraint hasName{
+		check: self.name.isDefined()
+		message: "Name attribute of Slot(s) in Topic '" +self.eContainer().name +"' is not defined. Slot names must be defined! " 
+	}
+	//Type cannot be undefined in my model since it's an ENUM, but was implemented since it was explicity asked in assessment requirements
+		constraint hasType{
+		check: self.type.isDefined()
+		message: "Type attribute of Slot(s) in Topic '" +self.eContainer().name +"' is not defined. Slot type must be defined! " 
+	}
+}
+
+//Components must have at least one trigger (whether time-based or topic-based).
+context Component{
+	constraint hasAtleastOneTrigger{
+		check: self.triggers.size() > 0
+		message: "Component '" + self.name + "' must have at least one trigger"
+	}
+}
+
+//Topics should be involved with at least one reactive component (whether triggering it, or having records produced by it).
+context Topic {
+    critique topicInvolvedWithComponent {
+        check: Component.all.exists(c | 
+            c.produces.includes(self) or 
+            c.consumes.includes(self))
+        message: "Topic '" + self.name + "' is not involved with any component"
+    }
+    
+//There must be no cycles across component-topic relationships .
+context Component {
+    constraint noCyclesInComponentTopicGraph {
+        check: not self.canReach(self, Set{})
+        
+        message: "Component '" + self.name + "' is involved in a cycle across component-topic relationships"
+    }
+}
+
+operation Component canReach(target : Component, visited : Set) : Boolean {
+    var newVisited = visited.including(self);
+    
+    // Topics this component produces to
+    var nextTopics = self.produces;
+    
+    // Components triggered by those topics (via TopicTrigger)
+    var nextComponents = Component.all.select(c |
+        c.triggers.select(t | t.isKindOf(TopicTrigger))
+                   .collect(t | t.topic)
+                   .exists(topic | nextTopics.includes(topic))
+    );
+    
+    if (nextComponents.includes(target)) {
+        return true;
+    }
+    
+    var toExplore = nextComponents.excludingAll(newVisited);
+    
+    return toExplore.exists(c | c.canReach(target, newVisited));
+}    

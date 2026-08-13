@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/Assessment/src" modelPluginID="Assessment" modelName="Rcl"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="17.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>rcl.ecore</foreignModel>
+  <genPackages prefix="Rcl" disposableProviderFactory="true" ecorePackage="rcl.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="rcl.ecore#//SlotType">
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//SlotType/STRING"/>
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//SlotType/DOUBLE"/>
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//SlotType/INTEGER"/>
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//SlotType/TIMESTAMP"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="rcl.ecore#//TimeUnit">
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//TimeUnit/SECONDS"/>
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//TimeUnit/MINUTES"/>
+      <genEnumLiterals ecoreEnumLiteral="rcl.ecore#//TimeUnit/HOURS"/>
+    </genEnums>
+    <genClasses ecoreClass="rcl.ecore#//Model">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rcl.ecore#//Model/components"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rcl.ecore#//Model/topics"/>
+    </genClasses>
+    <genClasses ecoreClass="rcl.ecore#//Component">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//Component/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rcl.ecore#//Component/triggers"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rcl.ecore#//Component/produces"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rcl.ecore#//Component/consumes"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="rcl.ecore#//Trigger"/>
+    <genClasses ecoreClass="rcl.ecore#//TimeTrigger">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//TimeTrigger/unit"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//TimeTrigger/value"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//TimeTrigger/onStartup"/>
+    </genClasses>
+    <genClasses ecoreClass="rcl.ecore#//TopicTrigger">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference rcl.ecore#//TopicTrigger/topic"/>
+    </genClasses>
+    <genClasses ecoreClass="rcl.ecore#//Topic">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//Topic/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference rcl.ecore#//Topic/slots"/>
+    </genClasses>
+    <genClasses ecoreClass="rcl.ecore#//Slot">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//Slot/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//Slot/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute rcl.ecore#//Slot/isKey"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
